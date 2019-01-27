@@ -3,6 +3,7 @@ import os
 class HistoricalResults:
 	COLUMN_DELIMITER = "\t"
 
+	
 
 	def read_in_prev_results(self, records_file):
 		full_results = {}

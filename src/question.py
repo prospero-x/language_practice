@@ -1,28 +1,22 @@
 import os
-import sys
-from grade import Grade
 import json
+
+#  Debug
 import pdb
 
 class Question:
-	def __init__(self, verb, tense, person, correct_answer):
-		self.question = "\n".join([verb, tense, person])
+	def __init__(self, verb, tense, subject_pronoun, correct_answer):
+		self.message = "\n".join([verb, tense, subject_pronoun])
 		self.correct_answer = correct_answer
 		self.response = ""
 
 	def Ask(self, progress_string):
 		os.system('clear')
 		print(progress_string)
-		self.response = input(self.question + " ")
+		self.response = input(self.message + " ")
 
 	def Grade(self):
-		if self.response == self.correct_answer:
-			Grade.correct_answer(self.question, self.response)
-			return 1
-		else:
-			Grade.incorrect_answer(self.question, self.response, self.correct_answer)
-			return 0
-
+		return self.response == self.correct_answer
 
 	def __str__(self):
 		return self.__repr__()
@@ -34,8 +28,7 @@ class Question:
 class QuestionsList(list):
 
 	def __init__(self, language = None):
-		pdb.set_trace()
-		self.language_dir = language
+		self.language_dir = "languages/"+ language
 		self.language_tenses = None
 		self.language_subjects = None
 		self.verbs = None
@@ -46,9 +39,9 @@ class QuestionsList(list):
 			self.language_tenses = json.load(f)
 
 
-	def load_subjects(self):
-		with open(self.language_dir + "/subjects.json") as f:
-			self.language_subjects = json.load(f)
+	def load_subject_pronouns(self):
+		with open(self.language_dir + "/subject_pronouns.json") as f:
+			self.subject_pronouns = json.load(f)
 
 
 	def load_verbs(self):
@@ -58,7 +51,7 @@ class QuestionsList(list):
 
 	def Build(self, selector_verb = None, selector_tense = None):
 		self.load_tenses()
-		self.load_subjects()
+		self.load_subject_pronouns()
 		self.load_verbs()
 
 
@@ -75,8 +68,8 @@ class QuestionsList(list):
 
 				tense_name = self.language_tenses[tense_code]
 				for subject_code, conjugation in persons.items():
-					subject = self.language_subjects[subject_code]
+					subject_pronoun = self.subject_pronouns[subject_code]
 
 					self.append(
-						Question(verb, tense_name, subject, conjugation)
+						Question(verb, tense_name, subject_pronoun, conjugation)
 					)

@@ -1,0 +1,18 @@
+#  language requirements:
+#  1) Must exist under 'languages/'
+#  2) Must itself be a directory
+language: Italiano
+
+#  verb and tense are mutually exclusive arguments: exactly ONE must 
+#  be defined, and the other commented out. 
+#  
+#  When <verb> is defined, all tenses defined for <verb> which are found 
+#  in languages/<language>/verbs.json will be tested. This is referred to 
+#  as a "Vertical" test. 
+#  
+#  When <tense> is defined, all verbs in languages/<language>/verbs.json
+#  for which <tense> is defined are tested. This is referred to as a 
+#  "Horizontal" test.
+
+verb: avere
+#tense: Il Passato Prossimo
