@@ -1,0 +1,28 @@
+{
+	"avere": {
+		"a": {
+			"1": "ho",
+			"2": "hai",
+			"3": "ha",
+			"4": "abbiamo",
+			"5": "avete",
+			"6": "hanno"
+		},
+		"b": {
+			"1": "ho avuto",
+			"2": "hai avuto",
+			"3": "ha avuto",
+			"4": "abbiamo avuto",
+			"5": "avete avuto",
+			"6": "hanno avuto"
+		},
+		"c": {
+			"1": "avrò",
+			"2": "avrai",
+			"3": "avrà",
+			"4": "avremo",
+			"5": "avrete",
+			"6": "avranno"
+		}
+	}
+}
