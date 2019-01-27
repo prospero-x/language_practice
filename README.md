@@ -2,7 +2,6 @@
 	
 	1. Set your desired settings in quiz_conf.yml
 	2. Run the following command: 
-		```
-		bash
+		```bash
 		./run_quiz.sh
 		```
