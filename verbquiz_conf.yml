@@ -1,0 +1,29 @@
+#  language requirements:
+#  1) Must exist under 'languages/'
+#  2) Must itself be a directory
+language: Italiano
+
+#  Define a list of verbs to select for the quiz. These MUST be a subset
+#  of the top level keys found in languages/<language>/verbs.json. If none
+#  are specified, all verbs in verbs.json will be used. 
+verbs: 
+- avere
+- essere
+- fare
+- sapere
+
+#  Define a list of tenses to select for the quiz. These MUST be a subset
+#  of the top level keys found in languages/<language>/tenses.json. If none
+#  are specified, all tenses in tenses.json will be used. 
+tenses: 
+ - Il Presento
+ - Il Passato Prossimo
+ - Il Futuro Semplice
+
+
+#  Define a list of subject pronouns to select for the quiz. These MUST be 
+#  a subset of the top level keys found in languages/<language>/tenses.json. 
+#  If none are specified, all tenses in tenses.json will be used. 
+pronouns: 
+ - io
+ - noi
