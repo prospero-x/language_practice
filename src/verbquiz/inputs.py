@@ -19,7 +19,7 @@ def get_inputs_from_config(conf_file):
 		return args
 
 	except yaml.YAMLError as e:
-		print("Yaml error: %s", e)
+		print("Yaml error: %s" % e)
 
 	except FileNotFoundError as e:
 		print(e)

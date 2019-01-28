@@ -12,8 +12,9 @@ from .inputs import Getch
 
 class Quiz:
 
-	def __init__(self, language):
+	def __init__(self, language, max_questions = None):
 		self.language = language
+		self.max_questions = int(max_questions) or None
 
 		#  Initialize the questions list
 		self.questions = QuestionsList(language = language)
@@ -23,16 +24,20 @@ class Quiz:
 
 	def _run(self):
 		question_num = 0
-		total_questions = len(self.questions)
+		total_questions = (
+			min(self.max_questions, len(self.questions))
+			if self.max_questions 
+			else len(self.questions)
+		)
 
 		#  Each time a question is asked, it is removed from self.questions
-		#  and placed onto the run_buffer. After all questions are asked, the
+		#  and placed in questions_asked. After all questions are asked, the
 		#  questions are copied back.
-		run_buffer = []
+		questions_asked = []
 
 		#  Start the quiz.
 		start = end = None
-		while self.questions:
+		for _ in range(total_questions):
 
 			#  Increment the progress label.
 			question_num += 1
@@ -49,13 +54,14 @@ class Quiz:
 			question.Ask(progress_string)
 			end = time.time()
 
-			run_buffer.append(question)
+			questions_asked.append(question)
 
-		self.questions = run_buffer.copy()
+
+		self.questions.extend(questions_asked)
 
 		total_seconds = (end - start)
 		self.times_run += 1
-		return start, total_seconds
+		return start, total_seconds, questions_asked
 
 	def Run(self):
 		#  No questions, nothing to do..
@@ -75,10 +81,10 @@ class Quiz:
 		os.system('clear')
 
 		#  Ask the questions
-		test_start, total_seconds = self._run()
+		test_start, total_seconds, questions_asked = self._run()
 
 		#  Score the result
-		Grader.grade_quiz(self.questions, self.language, test_start, total_seconds)
+		Grader.grade_quiz(questions_asked, self.language, test_start, total_seconds)
 
 	@cached_property
 	def get_description(self):
@@ -95,4 +101,7 @@ class Quiz:
 		descr += "tenses(%d): " % len(tenses) + " - ".join(tenses) + "\n"
 		descr += "pronouns:(%d): " % len(pronouns) + " - ".join(pronouns) + "\n"
 		descr += "total questions: %d" % len(self.questions) + "\n"
+
+		if self.max_questions:
+			descr += "max questions: %d" % self.max_questions
 		return descr

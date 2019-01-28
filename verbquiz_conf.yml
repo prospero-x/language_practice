@@ -16,9 +16,9 @@ verbs:
 #  of the top level keys found in languages/<language>/tenses.json. If none
 #  are specified, all tenses in tenses.json will be used. 
 tenses: 
-  #- Il Presento
-  #- Il Passato Prossimo
- #- Il Futuro Semplice
+ - Il Presento
+ - Il Passato Prossimo
+ - Il Futuro Semplice
  #- L'Imperfetto
  #- Il condizionale
  #- Il Presente del Congiuntivo
@@ -36,3 +36,5 @@ pronouns:
  - noi
  - voi
  - loro
+
+max_questions: 1000

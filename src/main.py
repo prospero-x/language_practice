@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
 	#  Initilize the quiz object
 	language = quiz_args['language']
-	quiz = verbquiz.Quiz(language)
+	quiz = verbquiz.Quiz(language, quiz_args.get('max_questions'))
 
 	#  Build the question based on the quiz arguments
 	questions_args = format_questions_args(
