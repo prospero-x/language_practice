@@ -10,8 +10,8 @@ def format_questions_args(quiz_args, mask):
 	mask = set(mask)
 	questions_args = {}
 	for k in quiz_args.keys():
-		if k in mask:
-			questions_args[k + "_mask"] = set(quiz_args[k].copy()) or None
+		if k in mask and quiz_args.get(k):
+			questions_args[k + "_mask"] = set(quiz_args[k].copy())
 	return questions_args
 
 

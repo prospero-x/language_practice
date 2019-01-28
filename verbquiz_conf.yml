@@ -7,18 +7,23 @@ language: Italiano
 #  of the top level keys found in languages/<language>/verbs.json. If none
 #  are specified, all verbs in verbs.json will be used. 
 verbs: 
-- avere
+#- avere
 - essere
-- fare
-- sapere
+#- fare
+#- sapere
 
 #  Define a list of tenses to select for the quiz. These MUST be a subset
 #  of the top level keys found in languages/<language>/tenses.json. If none
 #  are specified, all tenses in tenses.json will be used. 
 tenses: 
- - Il Presento
- - Il Passato Prossimo
- - Il Futuro Semplice
+  #- Il Presento
+  #- Il Passato Prossimo
+ #- Il Futuro Semplice
+ #- L'Imperfetto
+ #- Il condizionale
+ #- Il Presente del Congiuntivo
+ #- L'Imperfetto del Congiuntivo
+
 
 
 #  Define a list of subject pronouns to select for the quiz. These MUST be 
@@ -26,4 +31,8 @@ tenses:
 #  If none are specified, all tenses in tenses.json will be used. 
 pronouns: 
  - io
+ - tu
+ - lui/lei
  - noi
+ - voi
+ - loro
