@@ -91,12 +91,12 @@ An optional file in *languages/X/* is _grader_phrases.json_, in which you can sp
 
 ```json
 {
-	"grade_header_phrase": <your_custom_phrases_here>,
-	"total_points_phrase": <your_custom_phrases_here>,
-	"completion_time_phrase": "<your_custom_phrases_here>,
-	"correct_answer_phrase": <your_custom_phrases_here>,
-	"wrong_answer_phrase": <your_custom_phrases_here>,
-	"wrong_answer_correction_phrase": <your_custom_phrases_here>
+	"grade_header_phrase": "<your_custom_phrases_here>",
+	"total_points_phrase": "<your_custom_phrases_here>",
+	"completion_time_phrase": "<your_custom_phrases_here>",
+	"correct_answer_phrase": "your_custom_phrases_here>",
+	"wrong_answer_phrase": "<your_custom_phrases_here>",
+	"wrong_answer_correction_phrase": "<your_custom_phrases_here>"
 }
 ```
 
