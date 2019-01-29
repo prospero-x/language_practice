@@ -3,38 +3,32 @@
 #  2) Must itself be a directory
 language: Italiano
 
-#  Define a list of verbs to select for the quiz. These MUST be a subset
-#  of the top level keys found in languages/<language>/verbs.json. If none
-#  are specified, all verbs in verbs.json will be used. 
+#  verbs - Required: verbs to ask questions on. These will passed to
+#  languages.<language>.verb_getter.VerbGetter.get_conjugations.
 verbs: 
-#- avere
-- essere
-#- fare
-#- sapere
+ - avere
+ - essere
+ - fare
+ - sapere
 
-#  Define a list of tenses to select for the quiz. These MUST be a subset
-#  of the top level keys found in languages/<language>/tenses.json. If none
-#  are specified, all tenses in tenses.json will be used. 
+#  tenses - Required: tenses to ask questions on. MUST be a subset of 
+#  languages.<language>.verb_getter.VerbGetter.tenses.
 tenses: 
- - Il Presento
- - Il Passato Prossimo
- - Il Futuro Semplice
+  - Il Presento
+  - Il Passato Prossimo
+  - Il Futuro Semplice
  #- L'Imperfetto
  #- Il condizionale
  #- Il Presente del Congiuntivo
  #- L'Imperfetto del Congiuntivo
+ #
 
 
+#  pronouns - Optional. Specify this list if you only want to be quizzed 
+#  on a subset of pronouns. MUST be a subset of 
+#  languages.<language>.verb_getter.VerbGetter.subject_pronouns.
+#pronouns: 
 
-#  Define a list of subject pronouns to select for the quiz. These MUST be 
-#  a subset of the top level keys found in languages/<language>/tenses.json. 
-#  If none are specified, all tenses in tenses.json will be used. 
-pronouns: 
- - io
- - tu
- - lui/lei
- - noi
- - voi
- - loro
 
-max_questions: 1000
+#  max_questions - Optional. Limit the number of questions the quiz will ask.
+#max_questions: 20

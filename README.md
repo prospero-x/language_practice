@@ -17,18 +17,16 @@ pip install -r requirements.txt
 ```
 ## verbquiz_conf.yml
 
-This file includes both required and optional values to pass to the quiz before running. Required: 
-1. language (one of the directories under languages/)
+This file includes both required and optional values to pass to the quiz before running.
+Required: 
+1. **language**  (must be a directory under "*languages/*")
+2. **verbs** (must be a list)
+3. **tenses** (must be a list)
 
 Optional:
-1. verbs
-2. tenses
-3. pronouns
-4. max_questions
+1. **pronouns** (subset of all pronouns, acts as a mask)
+2. **max_questions** (limits the number of questions in verbquiz)
 
-For each of the optional parameters in (verbs, tenses, pronouns), a list of values may be passed which will select a subset of verbs, tenses, and pronouns (respectively) from languages/LANGUAGE/verbs.json. If no values are provided, then all values in verbs.json will be used for questions in the quiz. 
-
-If max_questions is defined, the quiz will choose a subset of MAX_QUESTIONS to ask on the quiz. Otherwise, all one question for each possible combination of verbs, tenses, and pronouns will be asked.
 ## Quiz Structure
 
 This is a verb quiz.  The fundamental building blocks are:
@@ -37,55 +35,59 @@ This is a verb quiz.  The fundamental building blocks are:
 3. pronouns
 
 That is to say, each for a given language, any verb can be conjugated into a certain
-tense, and further inflected to agree with different subject pronouns. For each question in the quiz, you will be given a verb in language X (specified in verbquiz_conf.yml) in the infinitive form, along with a tense and a subject pronoun. Your task will be to conjugate and inflect the verb correctly. Correct answeres are in languages/X/verbs.json.
+tense, and further inflected to agree with different subject pronouns. For each question in the quiz, you will be given a verb in language X (specified in verbquiz_conf.yml) in the infinitive form, along with a tense and a subject pronoun. Your task will be to conjugate and inflect the verb correctly.
 
 ## Adding a new language
 
-To add a new language for the quiz, create a new directory under languages/ called 
-LANGUAGE_NAME. The three required files under languages/LANGUAGE_NAME/ are _verbs.json_, _tenses.json_, and _subject_pronouns.json_. Examples below are given for languages/Italiano/:
+To add a new language named X, create a new directory under *languages/* called 
+X. You **must** implement an interface called "VerbGetter" which inherits from *src/interface.VerbInterface*, and save it in fily *languages/X/verb_getter.py*. The base class for this interface is shown below:
 
-1. _verbs.json_: 
-```json
-{
-	"avere": {
-		"a": {
-			"1": "ho",
-			"2": "hai",
-			"3": "ha",
-			"4": "abbiamo",
-			"5": "avete",
-			"6": "hanno"
-		},
-		"b": {
-		    ...
-		    ...
+```python
+class VerbInterface(metaclass = ABCMeta):
+
+	@abstractmethod
+	def get_conjugations(self, verbs):
+		'''
+		MUST return a dictionary structured as follows:
+		{
+		    'verb_1': {
+	            'tense_1': {
+	                'pronoun_1': 'conjudated_verb_1'.
+	                ...
+	                ...
+	            }
+		    } 
 		}
-	}
-}
+		'''
+		raise NotImplementedError
+
+	@abstractmethod
+	def tenses(self):
+		'''
+		MUST return a set of strings, which will be used to enforce
+		agreement rules on tenses specified in verbquiz_conf.yml.
+
+		The tenses in the dictionary returned by get_conjugations must
+		be a subset of the set returned by this method.
+		'''
+		raise NotImplementedError
+
+	@abstractmethod
+	def subject_pronouns(self):
+		'''
+		MUST return a set of strings, which will be used to enforce
+		agreement rules on optional pronouns specified in verbquiz_conf.yml.
+
+		The subject pronouns in the dictionary returned by get_conjugations
+		must be a subset of the set returned by this method.
+		'''
+		raise NotImplementedError
 ```
 
-2. _tenses.json_:
-```json
- {
-	"a": "Il Presento",
-    ...
-    ...
-}
-```
+In general, it is up to you how to implement this interface. For example, the implementation
+in Italiano/ reads the conjugations from a web service as www.italian-verbs.com.
 
-
-3. _subject_pronouns.json_:
-```json
-{
-	"1": "io",
-	...
-	...
-}
-```
-
-Note that they keys in _tenses.json_ and _subject_pronouns.json_ **must** match the keys in verbs.json. I.e., if you have key "a" for tense one in _verbs.json_ "a" must be a defined key in tenses.json, and the same for _subject_pronouns.json_
-
-A fourth optional file is _grader_phrases.json_, in which you can specify phrases that the quiz will display to you when grading the results of the quiz. Note that the keys **must** be identical to the ones shown here. If any are missing, the program will fall back on the default English phrases.
+An optional file in *languages/X/* is _grader_phrases.json_, in which you can specify phrases that the quiz will display to you when grading the results of the quiz. Note that the keys **must** be identical to the ones shown here. If any are missing, the program will fall back on the default English phrases.
 
 ```json
 {
@@ -97,3 +99,15 @@ A fourth optional file is _grader_phrases.json_, in which you can specify phrase
 	"wrong_answer_correction_phrase": <your_custom_phrases_here>
 }
 ```
+
+## Development
+run this command from the project root directory:
+```bash
+export PYTHONPATH=$PYTHONPATH:$PWD/src
+```
+
+This will allow you to call the following:
+```python
+from interface import VerbInterface
+```
+in any of your source files under *languages/*.

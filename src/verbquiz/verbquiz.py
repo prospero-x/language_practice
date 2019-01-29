@@ -14,7 +14,7 @@ class Quiz:
 
 	def __init__(self, language, max_questions = None):
 		self.language = language
-		self.max_questions = int(max_questions) or None
+		self.max_questions = int(max_questions) if max_questions else None
 
 		#  Initialize the questions list
 		self.questions = QuestionsList(language = language)
@@ -26,7 +26,7 @@ class Quiz:
 		question_num = 0
 		total_questions = (
 			min(self.max_questions, len(self.questions))
-			if self.max_questions 
+			if self.max_questions
 			else len(self.questions)
 		)
 
@@ -55,7 +55,6 @@ class Quiz:
 			end = time.time()
 
 			questions_asked.append(question)
-
 
 		self.questions.extend(questions_asked)
 

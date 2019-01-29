@@ -14,19 +14,7 @@ class ConfigException(ValueError):
 		super(ConfigException, self).__init__(error_message + config_message)
 
 
-def verify_args(args):
-	'''
-	In addition to verifying presence and type of arguments in
-	CONF_FILE, this function also performs up-front checks that it is
-	safe to call Quiz.Run(), such as verifying that the value for 'language'
-	is a directory under languages.
-
-
-	param args: all args gathered in CONF_FILE
-	param mutex_args: subset of mutually exclusive args, exactly one of which
-	must be in args.
-	'''
-
+def verify_language(args):
 	#  Verify language was passed
 	if 'language' not in args:
 		raise ConfigException("'language' must be specified.")
@@ -45,4 +33,59 @@ def verify_args(args):
 			"language '%s' must be a directory under 'languages'."
 			% args['language']
 
+		)
+
+
+def verify_verbs(args):
+	#  Verbs is a required argument
+	if 'verbs' not in args:
+		raise ConfigException("'verbs' must be specified.")
+
+	#  Verbs must be iterable
+	try:
+		list(args['verbs'])
+	except (TypeError, AttributeError):
+		raise ConfigException("'verbs' must be a list.")
+
+	num_verbs = len(args['verbs'])
+	if num_verbs > 10:
+		print(
+			"\n\n!!! WARNING !!!\n\nYou have specified {num_verbs} verbs."
+			" This could cause the quiz to be more than {num_questions} "
+			"questions long. Are you sure you wish to continue?\n\nPress "
+			"Enter to continue, or Ctrl + C to exit.".format(
+				num_verbs = num_verbs,
+				num_questions = num_verbs * 6
+			)
+		)
+
+		#  Wait for either "Enter" or SIGINT from user.
+		input()
+
+
+def verify_tenses(args, allowed_tenses):
+	#  Tenses is a required argument
+	if 'tenses' not in args:
+		raise ConfigException("'tenses' must be specified")
+
+	#  Tenses must be iterable.
+	try:
+		list(args['tenses'])
+	except (TypeError, AttributeError):
+		raise ConfigException("'tenses' must be a list")
+
+
+def verify_pronouns(args, allowed_pronouns):
+	if 'pronouns' not in args:
+		return
+
+	try:
+		pronouns = set(args['pronouns'])
+	except (TypeError, AttributeError):
+		raise ConfigException("'pronouns' must be a list")
+
+	notallowed = pronouns - allowed_pronouns
+	if len(notallowed) > 0:
+		raise ConfigException(
+			"'pronouns' was defined with unrecognized values: %s" % ", ".join(notallowed)
 		)

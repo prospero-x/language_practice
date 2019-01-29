@@ -38,36 +38,20 @@ class QuestionsList(list):
 	def __init__(self, language = None):
 		self.language_dir = "languages/" + language
 
-	def Build(self, verbs_mask=None, tenses_mask=None, pronouns_mask=None):
-		tense_names = load_mapping(self.language_dir + "/tenses.json")
-		pronoun_names = load_mapping(
-			self.language_dir + "/subject_pronouns.json"
-		)
-		verbs = load_mapping(self.language_dir + "/verbs.json")
-
-		for v, tenses in verbs.items():
-			# If a certain verb was specified at initialization, select only
-			# that verb.
-			if verbs_mask and v not in verbs_mask:
-				continue
-
-			for tense_code, persons in tenses.items():
-				# If a certain tense was specified at initialization, select
-				# only that tense
-				tense_name = tense_names[tense_code]
-				if tenses_mask and tense_name not in tenses_mask:
+	def Build(self, verbs, tenses_mask, pronouns_mask=None):
+		for v, all_tenses in verbs.items():
+			for tense, inflections in all_tenses.items():
+				if tense not in tenses_mask:
 					continue
 
-				tense_name = tense_names[tense_code]
-				for pronoun_code, conjugation in persons.items():
+				for subject_pronoun, conjugation in inflections.items():
 					#  If a certain pronoun was specified at initialization,
 					#  select only that pronoun
-					pronoun_name = pronoun_names[pronoun_code]
-					if pronouns_mask and pronoun_name not in pronouns_mask:
+					if pronouns_mask and subject_pronoun not in pronouns_mask:
 						continue
 
 					self.append(
-						Question(v, tense_name, pronoun_name, conjugation)
+						Question(v, tense, subject_pronoun, conjugation)
 					)
 
 	def append(self, other):
